@@ -157,8 +157,6 @@ What I'm presenting here today is fairly agnostic to your approach, be it bayesi
 
 $$\mathcal{Y} = \mathcal{F(X)}$$
 + Imagine that $\mathcal{X}$ ___causes___ $\mathcal{Y}$ through some function: $\mathcal{F}$
-
---
 + $\mathcal{F}$ is a theoretical model, set of statements, path model etc.
 
 --
@@ -214,11 +212,9 @@ We will use an example I sourced from Kaggle, related to the paper:
 
 >https://www.kaggle.com/datasets/andrewmvd/heart-failure-clinical-data/data
 
---
-
 + Data related to heart failure
 + Paper tests various prediction methods to see if albumin and serum creatinine alone can predict death.
-+ Any modelling apporach would be more more extensive than the example here.
++ Any modelling approach would be more more extensive than the example here.
 
 <br><br>
 
@@ -336,7 +332,7 @@ summary(r_model_exp)
 
 ---
 
-# Explanaory model - Python
+# Explanatory model - Python
 
 ```{python pd_setup, include=FALSE}
 import pandas as pd
@@ -382,7 +378,7 @@ print(py_auc)
 
 _No, not if your goal is explanatory_
 
-??? 
+???
 We are interested in whether our model makes a good job of estimating F(x).
 Do the measured variables (and their coefficients) have a relationship with Y?
 Might use the AUC / ROC as a measure of variance explained by the model.
@@ -399,7 +395,9 @@ In a GLM like this, it's worth considering the error around the intercept, as th
 
 ???
 
-Two things here: Scikit-learn is set up to tune predictive models.  It, by default, uses the ridge penalty to reduce overfitting/improve predictive accuracy.  Once you apply a penalty, you can't directly interpret the coefficient, or the error as the degrees-of-freedom are effected.  E.g. if you penalise 20% of the coefficient's value, how to you understand 80% of two predictors on the degrees of freedom?
+Two things here: Scikit-learn is set up to tune predictive models.  It, by default, uses the ridge penalty to reduce overfitting/improve predictive accuracy.  
+
+Once you apply a penalty, you can't directly interpret the coefficient, or the error as the degrees-of-freedom are effected.  E.g. if you penalise 20% of the coefficient's value, how to you understand 80% of two predictors on the degrees of freedom?
 
 You can force scikit learn to do it without a penalty (shown next), but why not use something geared to the purpose?
 For those who learnt R/Python modelling using Caret or Scikit learn, you need to appreciate that you are building a predictive model, not an explanatory model.
@@ -478,10 +476,11 @@ print(py_auc)
 .pull-left[
 
 ### Explanation
-* Plausible relationship - DAG
+* Plausible relationship
  * Estimating $\mathcal{F(X)}$ through modelling $f(X)$
  * Interpretability
 * Minimising bias
+* Interested in the coefficients and error terms in regression
 * Performance on the whole dataset
 * Feature engineering should be logically consistent with relationship
 * Scale/centre predictors for interpretation reasons
@@ -501,6 +500,8 @@ print(py_auc)
 ]
 
 ???
+
+Plausible relationship: might want to draw a DAG.
 
 So you might leave multiple 'non-significant' predictors in an explanatory model, as they are rational and all effects conditional on each other.
 
@@ -594,7 +595,7 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 
 .pull-left[
 
-## Consider what the purpose of your model is:
+### Consider the purpose of your model:
 
 * What is your question?
 
@@ -606,7 +607,9 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 ]
 
 .pull-right[
-<br><br><br>
+<center>
+<div class="tenor-gif-embed" data-postid="1688826665026359193" data-share-method="host" data-aspect-ratio="1.25758" data-width="75%"><a href="https://tenor.com/view/miles-morales-miles-across-the-spider-verse-i-made-another-mistake-i-made-a-mistake-gif-1688826665026359193">Miles Morales Across The Spider Verse GIF</a>from <a href="https://tenor.com/search/miles+morales-gifs">Miles Morales GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script></center>
+<br>
 > "With great power comes greate responsibility"
 - Stan Lee (via Spiderman's Uncle Ben)
 
@@ -635,7 +638,7 @@ Shmueli, G. (2010) 'To Explain or to Predict?' _Statistical Science_ __25__, no.
 ---
 
 
-## Predictive Model - R bonus (ridge regression, like Scikit learn assumes you want...)
+## Predictive Model - R bonus (like Scikit learn assumes you want...)
 
 ```{r r_ridge, message=FALSE, warning=FALSE}
 heart_failure_dt$sc_serum_creatinin <- scale(heart_failure_dt$serum_creatinine)

@@ -108,8 +108,6 @@ What I'm presenting here today is fairly agnostic to your approach, be it bayesi
 
 `$$\mathcal{Y} = \mathcal{F(X)}$$`
 + Imagine that `\(\mathcal{X}\)` ___causes___ `\(\mathcal{Y}\)` through some function: `\(\mathcal{F}\)`
-
---
 + `\(\mathcal{F}\)` is a theoretical model, set of statements, path model etc.
 
 --
@@ -165,11 +163,9 @@ We will use an example I sourced from Kaggle, related to the paper:
 
 &gt;https://www.kaggle.com/datasets/andrewmvd/heart-failure-clinical-data/data
 
---
-
 + Data related to heart failure
 + Paper tests various prediction methods to see if albumin and serum creatinine alone can predict death.
-+ Any modelling apporach would be more more extensive than the example here.
++ Any modelling approach would be more more extensive than the example here.
 
 &lt;br&gt;&lt;br&gt;
 
@@ -280,7 +276,7 @@ summary(r_model_exp)
 
 ---
 
-# Explanaory model - Python
+# Explanatory model - Python
 
 
 
@@ -303,7 +299,7 @@ print(py_model1_exp_summary)
 ## Model:                          Logit   Df Residuals:                      296
 ## Method:                           MLE   Df Model:                            2
 ## Date:                Mon, 18 Nov 2024   Pseudo R-squ.:                  0.1359
-## Time:                        13:57:20   Log-Likelihood:                -162.16
+## Time:                        15:02:46   Log-Likelihood:                -162.16
 ## converged:                       True   LL-Null:                       -187.67
 ## Covariance Type:            nonrobust   LLR p-value:                 8.308e-12
 ## =====================================================================================
@@ -349,7 +345,7 @@ print(py_auc)
 
 _No, not if your goal is explanatory_
 
-??? 
+???
 We are interested in whether our model makes a good job of estimating F(x).
 Do the measured variables (and their coefficients) have a relationship with Y?
 Might use the AUC / ROC as a measure of variance explained by the model.
@@ -366,7 +362,9 @@ In a GLM like this, it's worth considering the error around the intercept, as th
 
 ???
 
-Two things here: Scikit-learn is set up to tune predictive models.  It, by default, uses the ridge penalty to reduce overfitting/improve predictive accuracy.  Once you apply a penalty, you can't directly interpret the coefficient, or the error as the degrees-of-freedom are effected.  E.g. if you penalise 20% of the coefficient's value, how to you understand 80% of two predictors on the degrees of freedom?
+Two things here: Scikit-learn is set up to tune predictive models.  It, by default, uses the ridge penalty to reduce overfitting/improve predictive accuracy.  
+
+Once you apply a penalty, you can't directly interpret the coefficient, or the error as the degrees-of-freedom are effected.  E.g. if you penalise 20% of the coefficient's value, how to you understand 80% of two predictors on the degrees of freedom?
 
 You can force scikit learn to do it without a penalty (shown next), but why not use something geared to the purpose?
 For those who learnt R/Python modelling using Caret or Scikit learn, you need to appreciate that you are building a predictive model, not an explanatory model.
@@ -432,7 +430,7 @@ print(py_auc)
 ```
 
 ```
-## 0.6331249999999999
+## 0.69
 ```
 
 ---
@@ -442,10 +440,11 @@ print(py_auc)
 .pull-left[
 
 ### Explanation
-* Plausible relationship - DAG
+* Plausible relationship
  * Estimating `\(\mathcal{F(X)}\)` through modelling `\(f(X)\)`
  * Interpretability
 * Minimising bias
+* Interested in the coefficients and error terms in regression
 * Performance on the whole dataset
 * Feature engineering should be logically consistent with relationship
 * Scale/centre predictors for interpretation reasons
@@ -465,6 +464,8 @@ print(py_auc)
 ]
 
 ???
+
+Plausible relationship: might want to draw a DAG.
 
 So you might leave multiple 'non-significant' predictors in an explanatory model, as they are rational and all effects conditional on each other.
 
@@ -558,7 +559,7 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 
 .pull-left[
 
-## Consider what the purpose of your model is:
+### Consider the purpose of your model:
 
 * What is your question?
 
@@ -570,7 +571,9 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 ]
 
 .pull-right[
-&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;center&gt;
+&lt;div class="tenor-gif-embed" data-postid="1688826665026359193" data-share-method="host" data-aspect-ratio="1.25758" data-width="75%"&gt;&lt;a href="https://tenor.com/view/miles-morales-miles-across-the-spider-verse-i-made-another-mistake-i-made-a-mistake-gif-1688826665026359193"&gt;Miles Morales Across The Spider Verse GIF&lt;/a&gt;from &lt;a href="https://tenor.com/search/miles+morales-gifs"&gt;Miles Morales GIFs&lt;/a&gt;&lt;/div&gt; &lt;script type="text/javascript" async src="https://tenor.com/embed.js"&gt;&lt;/script&gt;&lt;/center&gt;
+&lt;br&gt;
 &gt; "With great power comes greate responsibility"
 - Stan Lee (via Spiderman's Uncle Ben)
 
@@ -599,7 +602,7 @@ Shmueli, G. (2010) 'To Explain or to Predict?' _Statistical Science_ __25__, no.
 ---
 
 
-## Predictive Model - R bonus (ridge regression, like Scikit learn assumes you want...)
+## Predictive Model - R bonus (like Scikit learn assumes you want...)
 
 
 ``` r

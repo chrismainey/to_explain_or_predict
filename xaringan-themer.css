@@ -36,11 +36,11 @@
   --code-font-is-google: 1;
   --base-font-size: 20px;
   --text-font-size: 1rem;
-  --code-font-size: 0.9rem;
+  --code-font-size: 0.8rem;
   --code-inline-font-size: 1em;
-  --header-h1-font-size: 2.75rem;
-  --header-h2-font-size: 2.25rem;
-  --header-h3-font-size: 1.75rem;
+  --header-h1-font-size: 2.55rem;
+  --header-h2-font-size: 1.8rem;
+  --header-h3-font-size: 1.4rem;
 
   /* Colors */
   --text-color: #18273F;
@@ -60,6 +60,7 @@
   --base: #43418A;
   --white: #E9EBEE;
   --black: #18273F;
+  --blockbackground: #DFE4EB;
 }
 
 html {
@@ -75,6 +76,10 @@ h1, h2, h3 {
   font-family: var(--header-font-family), var(--header-font-family-fallback);
   font-weight: 600;
   color: var(--header-color);
+}
+
+li {
+  padding: 6px 3px;
 }
 .remark-slide-content {
   background-color: var(--background-color);
@@ -111,15 +116,20 @@ strong {
   font-weight: bold;
   color: var(--text-bold-color);
 }
+.big {
+  font-size: 2rem;
+}
 a, a > code {
   color: var(--link-color);
   text-decoration: none;
 }
+.mjx-chtml{ font-size: 130% !important; }
+
 .footnote {
   position: absolute;
-  bottom: 60px;
+  bottom: 30px;
   padding-right: 4em;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 .remark-code-line-highlighted {
   background-color: var(--code-highlight-color);
@@ -178,6 +188,7 @@ img, video, iframe {
 blockquote {
   border-left: solid 5px #43418A80;
   padding-left: 1em;
+  background-color: var(--blockbackground);
 }
 .remark-slide table {
   margin: auto;

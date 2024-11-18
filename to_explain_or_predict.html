@@ -65,13 +65,14 @@ ___Box (1976)___
 What is your question?
 &lt;/h2&gt;&lt;/center&gt;
 
+???
 
+Through out this, keep asking yourself: what is your question?
 
 ---
 
 # The two broad classes of DS/modelling question:
 
---
 
 ## Explain
 
@@ -93,8 +94,11 @@ __You can use many of the same models to fit in either context, but how you do i
 
 ???
 Prof. Shmueli's paper laments that statisticians had almost exclusively on 'explanatory' models.
-I'd like to suggest that, with the increasing accessibility of Data Science and Machine Learning, the focus of many
-modern practitioners has swung the other way.  Some of you may always be approaching a model as a prediction question.
+
+With the increasing accessibility of Data Science and Machine Learning, the focus of many
+modern practitioners has swung the other way.  
+
+Some of you may always be approaching a model as a prediction question.
 
 What I'm presenting here today is fairly agnostic to your approach, be it bayesian / frequentist / whatever.
 
@@ -123,9 +127,10 @@ What I'm presenting here today is fairly agnostic to your approach, be it bayesi
 Shmueli, G. (2010), http://www.jstor.org/stable/41058949
 ]
 
+
 ???
 
-Firstly, don't be scared by the representation here, as I'll explain.
+...don't be scared, it's not that bad...
 
 We are trying to model how X causes something, without being constrained by what data we have.
 This can be concepts such as Y = depression, and F(x) could be things like: anxiety, past trauma, physical health, stress... etc.
@@ -148,7 +153,7 @@ We can't measure them directly, so
 What do I mean by 'causes?'  It's not the same as 'associated with'.  There is an 'exposure' to 'outcome' effect, and a temporal element: i.e. exposure before outcome.
 This DAG is hypothesising the causal relationship between chemotherapy and venous thromoembolism (VTE)
 
-The arrows indicator the direction of causal relationships. Age, sex, tumor site and tumour size are confounding this relationship and should be adjusted for in a model, but platelet count is a mediator and should not.
+The arrows indicator the direction of causal relationships. Age, sex, tumour site and tumour size are confounding this relationship and should be adjusted for in a model, but platelet count is a mediator and should not.
 
 ---
 # Simple Example: 
@@ -298,7 +303,7 @@ print(py_model1_exp_summary)
 ## Model:                          Logit   Df Residuals:                      296
 ## Method:                           MLE   Df Model:                            2
 ## Date:                Mon, 18 Nov 2024   Pseudo R-squ.:                  0.1359
-## Time:                        13:09:11   Log-Likelihood:                -162.16
+## Time:                        13:57:20   Log-Likelihood:                -162.16
 ## converged:                       True   LL-Null:                       -187.67
 ## Covariance Type:            nonrobust   LLR p-value:                 8.308e-12
 ## =====================================================================================
@@ -314,8 +319,7 @@ print(py_model1_exp_summary)
 ---
 # Testing Fit
 
-Interested in fit within our sample:
-* Significance of coefficients in our summaries
+* Significance of coefficients in our model summaries
 * Assumption of regression being met - _a topic for another day_
 
 
@@ -328,14 +332,6 @@ auc(r_model_exp)
 ## [1] 0.7614173
 ```
 
-``` r
-BIC(r_model_exp)
-```
-
-```
-## [1] 341.4225
-```
-
 
 ``` python
 from sklearn import metrics
@@ -345,14 +341,6 @@ print(py_auc)
 
 ```
 ## 0.7614172824302136
-```
-
-``` python
-print(py_model1_exp.bic)
-```
-
-```
-## 341.422453885286
 ```
 
 --
@@ -444,7 +432,7 @@ print(py_auc)
 ```
 
 ```
-## 0.7284541723666211
+## 0.6331249999999999
 ```
 
 ---
@@ -476,10 +464,11 @@ print(py_auc)
 
 ]
 
+???
 
 So you might leave multiple 'non-significant' predictors in an explanatory model, as they are rational and all effects conditional on each other.
 
-You might be happy with a 'wrong' model for in predction, if it gives better predictions.
+You might be happy with a 'wrong' model for in prediction, if it gives better predictions.
 
 ---
 # Explain or predict Bingo (1):
@@ -488,9 +477,11 @@ You might be happy with a 'wrong' model for in predction, if it gives better pre
 
 .big[Forecasting attendances at an Emergency Department]
 
+&lt;br&gt;&lt;br&gt;
+
 --
 
-# Predict!
+## Predict!
 
 ---
 
@@ -504,7 +495,7 @@ You might be happy with a 'wrong' model for in predction, if it gives better pre
 
 --
 
-##Explain!
+## Explain!
 
 
 ---
@@ -518,7 +509,7 @@ You might be happy with a 'wrong' model for in predction, if it gives better pre
 
 --
 
-##It depends...is it about the person's individual risk based on explanatory factors, the best prediction you can make, or is it for risk-adjustment?
+## It depends:...  is it about the person's individual risk based on explanatory factors, the best prediction you can make, or is it for risk-adjustment?
 
 ---
 # Explain or predict Bingo (4):
@@ -546,10 +537,10 @@ You might be happy with a 'wrong' model for in predction, if it gives better pre
 
 --
 
-##Predict
+## Predict!
 
 ---
-# Explain or predict Bingo (5):
+# Explain or predict Bingo (6):
 
 &lt;br&gt;&lt;br&gt;&lt;br&gt;
 
@@ -559,7 +550,31 @@ You might be happy with a 'wrong' model for in predction, if it gives better pre
 
 --
 
-##It depends...:  are you testing what causes it, or predicting future states of the population?
+## It depends:...  are you testing what causes it, or predicting future states of the population?
+
+---
+
+# Summary
+
+.pull-left[
+
+## Consider what the purpose of your model is:
+
+* What is your question?
+
+* Is it predictive or explanatory?
+
+* Are you using the right modelling framework?
+
+* Are you doing anything that is incompatible with the framework you've identified?
+]
+
+.pull-right[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&gt; "With great power comes greate responsibility"
+- Stan Lee (via Spiderman's Uncle Ben)
+
+]
 
 ---
 
@@ -584,7 +599,7 @@ Shmueli, G. (2010) 'To Explain or to Predict?' _Statistical Science_ __25__, no.
 ---
 
 
-## Predictive Model - R bonus
+## Predictive Model - R bonus (ridge regression, like Scikit learn assumes you want...)
 
 
 ``` r
@@ -607,8 +622,6 @@ library(glmnet)
 cv &lt;- cv.glmnet(x, y, alpha = 0, family="binomial")
 
 ridge1&lt;-glmnet(x,y, alpha=0, lamda=cv$lambda.min, family="binomial")
-
-
 
 # Make predictions on the test data
 x.test &lt;- model.matrix(DEATH_EVENT~sc_serum_creatinin+sc_ejection_fraction, Test)[,-1]

@@ -123,6 +123,7 @@ a, a > code {
   color: var(--link-color);
   text-decoration: none;
 }
+
 .mjx-chtml{ font-size: 130% !important; }
 
 .footnote {

@@ -77,3 +77,29 @@ predictions <- predict(ridge1, newx=x.test, type="response") |> as.vector()
 
 ModelMetrics::auc(Test$DEATH_EVENT, predictions)
 
+
+
+
+
+# logarithmic relationship tested
+
+library(readr)
+heart_failure_dt <- read_csv("data/heart_failure_clinical_records_dataset.csv")
+
+r_model_exp2 <- glm(DEATH_EVENT ~ serum_creatinine + ejection_fraction
+                   , data=heart_failure_dt
+                   , family = "binomial")
+
+
+r_model_exp3 <- glm(DEATH_EVENT ~ serum_creatinine + ejection_fraction
+                    , data=heart_failure_dt
+                    , family = binomial(link = "cloglog"))
+
+
+summary(r_model_exp2)
+summary(r_model_exp3)
+
+
+library(ModelMetrics)
+
+auc(r_model_exp2)

@@ -299,9 +299,11 @@ $$\large{y= \alpha + \beta_{i} x_{i} + \epsilon}$$
 
 
 ---
-# The Generalized Linear Model (GLM):
+## How can we use regression on other distributions / data types?
 
-For distributions in the exponential family, GLM allows the linear model to relate to response through a function:
+We can 'zoom out' to a more the 'Generalized Linear Model (GLM):
+
+_For distributions in the exponential family, GLM allows the linear model to relate to response through a function:_
 
 $$\large{g(\mu)= \alpha + \beta_{i} x_{i}}$$
 <br>
@@ -309,8 +311,18 @@ $$\large{g(\mu)= \alpha + \beta_{i} x_{i}}$$
 + $g$ is the link function - related to each
 
 --
+<br>
 
-So, for logistic regression, the link function is 'logit' or the log odds of the event.
+###So, for logistic regression, the link function is 'logit' or the log odds of the event.
+
+???
+
+As the name suggest, a more general form allows us to use different distributions, but understand them as a linear model on a given scale.  E.g. for count data, $\mu$ would be the expected count, and $g$ would be the natural logarithm, and the model is using the Poisson distribution.  
+
+In our case, for binary, we are modelling the 'odds' of the outcome (death) on the log scale, with a binomial distribution.
+This is the log-odd, or 'logit' link fiction:  hence logistic regression.
+
+__Importantly, I can use it to examine the explanatory relationships, or to predict new data__
 
 ---
 
@@ -607,10 +619,9 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 ]
 
 .pull-right[
-<center>
-<div class="tenor-gif-embed" data-postid="1688826665026359193" data-share-method="host" data-aspect-ratio="1.25758" data-width="75%"><a href="https://tenor.com/view/miles-morales-miles-across-the-spider-verse-i-made-another-mistake-i-made-a-mistake-gif-1688826665026359193">Miles Morales Across The Spider Verse GIF</a>from <a href="https://tenor.com/search/miles+morales-gifs">Miles Morales GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script></center>
-<br>
-> "With great power comes greate responsibility"
+
+
+> "With great power comes great responsibility"
 - Stan Lee (via Spiderman's Uncle Ben)
 
 ]

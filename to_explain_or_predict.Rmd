@@ -607,22 +607,21 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 
 .pull-left[
 
-### Consider the purpose of your model:
-
 * What is your question?
 
 * Is it predictive or explanatory?
-
 * Are you using the right modelling framework?
+* Are you doing anything that is incompatible with that framework?
 
-* Are you doing anything that is incompatible with the framework you've identified?
+* We used logistic regression in both an explanatory and predictive fashion
+* Both approaches would have more work than shown here
+
 ]
 
 .pull-right[
 
-
-> "With great power comes great responsibility"
-- Stan Lee (via Spiderman's Uncle Ben)
+<br><br>
+<iframe src="https://giphy.com/embed/MCZ39lz83o5lC" width="480" height="259" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/MCZ39lz83o5lC">via GIPHY</a></p>
 
 ]
 
@@ -652,7 +651,6 @@ Shmueli, G. (2010) 'To Explain or to Predict?' _Statistical Science_ __25__, no.
 ## Predictive Model - R bonus (like Scikit learn assumes you want...)
 
 ```{r r_ridge, message=FALSE, warning=FALSE}
-heart_failure_dt$sc_serum_creatinin <- scale(heart_failure_dt$serum_creatinine)
 heart_failure_dt$sc_ejection_fraction <- scale(heart_failure_dt$ejection_fraction)
 
 trainIndex <- caret::createDataPartition(heart_failure_dt$DEATH_EVENT
@@ -663,17 +661,17 @@ trainIndex <- caret::createDataPartition(heart_failure_dt$DEATH_EVENT
 Train <- heart_failure_dt[ trainIndex,]
 Test  <- heart_failure_dt[-trainIndex,]
 
-x <- model.matrix(DEATH_EVENT~sc_serum_creatinin+sc_ejection_fraction, Train)[,-1]
+x <- model.matrix(DEATH_EVENT~log(serum_creatinine)+sc_ejection_fraction, Train)[,-1]
 y <- Train$DEATH_EVENT
 
 library(glmnet)
 # Cross validate to get best lambda (shrinkage)
 cv <- cv.glmnet(x, y, alpha = 0, family="binomial")
 
-ridge1<-glmnet(x,y, alpha=0, lamda=cv$lambda.min, family="binomial")
+ridge1<-glmnet(x,y, alpha=0, lamda=cv$lambda.1se, family="binomial")
 
 # Make predictions on the test data
-x.test <- model.matrix(DEATH_EVENT~sc_serum_creatinin+sc_ejection_fraction, Test)[,-1]
+x.test <- model.matrix(DEATH_EVENT~log(serum_creatinine)+sc_ejection_fraction, Test)[,-1]
 
 predictions <- predict(ridge1, newx=x.test, type="response") |> as.vector()
 

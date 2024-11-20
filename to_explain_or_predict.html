@@ -4,7 +4,7 @@
     <title>To Explain or Predict: how different modelling objectives change how you use the same tools</title>
     <meta charset="utf-8" />
     <meta name="author" content="Chris Mainey" />
-    <meta name="date" content="2024-11-19" />
+    <meta name="date" content="2024-11-20" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
@@ -310,8 +310,8 @@ print(py_model1_exp_summary)
 ## Dep. Variable:            DEATH_EVENT   No. Observations:                  299
 ## Model:                          Logit   Df Residuals:                      296
 ## Method:                           MLE   Df Model:                            2
-## Date:                Tue, 19 Nov 2024   Pseudo R-squ.:                  0.1359
-## Time:                        17:16:16   Log-Likelihood:                -162.16
+## Date:                Wed, 20 Nov 2024   Pseudo R-squ.:                  0.1359
+## Time:                        13:39:05   Log-Likelihood:                -162.16
 ## converged:                       True   LL-Null:                       -187.67
 ## Covariance Type:            nonrobust   LLR p-value:                 8.308e-12
 ## =====================================================================================
@@ -442,7 +442,7 @@ print(py_auc)
 ```
 
 ```
-## 0.7713068181818182
+## 0.7957351290684623
 ```
 
 ---
@@ -571,22 +571,21 @@ You might be happy with a 'wrong' model for in prediction, if it gives better pr
 
 .pull-left[
 
-### Consider the purpose of your model:
-
 * What is your question?
 
 * Is it predictive or explanatory?
-
 * Are you using the right modelling framework?
+* Are you doing anything that is incompatible with that framework?
 
-* Are you doing anything that is incompatible with the framework you've identified?
+* We used logistic regression in both an explanatory and predictive fashion
+* Both approaches would have more work than shown here
+
 ]
 
 .pull-right[
 
-
-&gt; "With great power comes great responsibility"
-- Stan Lee (via Spiderman's Uncle Ben)
+&lt;br&gt;&lt;br&gt;
+&lt;iframe src="https://giphy.com/embed/MCZ39lz83o5lC" width="480" height="259" style="" frameBorder="0" class="giphy-embed" allowFullScreen&gt;&lt;/iframe&gt;&lt;p&gt;&lt;a href="https://giphy.com/gifs/MCZ39lz83o5lC"&gt;via GIPHY&lt;/a&gt;&lt;/p&gt;
 
 ]
 
@@ -617,7 +616,6 @@ Shmueli, G. (2010) 'To Explain or to Predict?' _Statistical Science_ __25__, no.
 
 
 ``` r
-heart_failure_dt$sc_serum_creatinin &lt;- scale(heart_failure_dt$serum_creatinine)
 heart_failure_dt$sc_ejection_fraction &lt;- scale(heart_failure_dt$ejection_fraction)
 
 trainIndex &lt;- caret::createDataPartition(heart_failure_dt$DEATH_EVENT
@@ -628,17 +626,17 @@ trainIndex &lt;- caret::createDataPartition(heart_failure_dt$DEATH_EVENT
 Train &lt;- heart_failure_dt[ trainIndex,]
 Test  &lt;- heart_failure_dt[-trainIndex,]
 
-x &lt;- model.matrix(DEATH_EVENT~sc_serum_creatinin+sc_ejection_fraction, Train)[,-1]
+x &lt;- model.matrix(DEATH_EVENT~log(serum_creatinine)+sc_ejection_fraction, Train)[,-1]
 y &lt;- Train$DEATH_EVENT
 
 library(glmnet)
 # Cross validate to get best lambda (shrinkage)
 cv &lt;- cv.glmnet(x, y, alpha = 0, family="binomial")
 
-ridge1&lt;-glmnet(x,y, alpha=0, lamda=cv$lambda.min, family="binomial")
+ridge1&lt;-glmnet(x,y, alpha=0, lamda=cv$lambda.1se, family="binomial")
 
 # Make predictions on the test data
-x.test &lt;- model.matrix(DEATH_EVENT~sc_serum_creatinin+sc_ejection_fraction, Test)[,-1]
+x.test &lt;- model.matrix(DEATH_EVENT~log(serum_creatinine)+sc_ejection_fraction, Test)[,-1]
 
 predictions &lt;- predict(ridge1, newx=x.test, type="response") |&gt; as.vector()
 
@@ -646,7 +644,7 @@ ModelMetrics::auc(Test$DEATH_EVENT, predictions)
 ```
 
 ```
-## [1] 71.69149
+## [1] 71.20213
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
